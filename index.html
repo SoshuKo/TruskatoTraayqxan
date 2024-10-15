@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>トルスカ語→チャーイクハン諸語変換機</title>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <h1>トルスカ語→チャーイクハン諸語変換機</h1>
+    <textarea id="inputText" rows="10" cols="50" placeholder="トルスカ語のテキストを入力してください"></textarea>
+    <button onclick="convertText()">変換する</button>
+    <h2>変換結果</h2>
+    <div id="outputText"></div>
+
+    <script>
+        function convertText() {
+            const input = document.getElementById("inputText").value;
+            const output = transformText(input);
+            document.getElementById("outputText").textContent = output;
+        }
+    </script>
+</body>
+</html>
