@@ -14,14 +14,13 @@ const replacements = [
   { pattern: /ugh/g, replacement: "ū" },
   { pattern: /ügh/g, replacement: "ī" },
   { pattern: /çhļ/g, replacement: "xr" },
-  { pattern: /sch/g, replacement: "ch" },
+  { pattern: /sch/g, replacement: "ch#" },
   // ③二重音字の置換
-  { pattern: /sp/g, replacement: "p" },
-  { pattern: /st/g, replacement: "t" },
-  { pattern: /sc/g, replacement: "c" },
-  { pattern: /sç/g, replacement: "k" },
-  { pattern: /sk/g, replacement: "q" },
-  { pattern: /tr/g, replacement: "tr" },
+  { pattern: /sp/g, replacement: "p#" },
+  { pattern: /st/g, replacement: "t#" },
+  { pattern: /sc/g, replacement: "c#" },
+  { pattern: /sç/g, replacement: "k#" },
+  { pattern: /sk/g, replacement: "q#" },
   { pattern: /çļ/g, replacement: "xr" },
   { pattern: /ģļ/g, replacement: "gr" },
   { pattern: /çh/g, replacement: "x" },
@@ -30,9 +29,6 @@ const replacements = [
   { pattern: /ï/g, replacement: "u" },
   { pattern: /ö/g, replacement: "e" },
   { pattern: /ë/g, replacement: "o" },
-  { pattern: /p/g, replacement: "f" },
-  { pattern: /t/g, replacement: "r" },
-  { pattern: /c/g, replacement: "s" },
   { pattern: /k/g, replacement: "qx" },
   { pattern: /g/g, replacement: "gh" },
   // ⑤一重音字Bの置換
@@ -74,10 +70,25 @@ function transformText(input) {
     }
   });
 
+  // 最後に # を削除（⑦）
+  transformed = transformed.replace(/#/g, "");
+
   return transformed;
 }
 
+// 複数単語の変換処理
+function transformMultipleWords(input) {
+  // 空白や改行で単語を分割
+  const words = input.split(/\s+/);
+
+  // 各単語を変換し、結果を1列に結合
+  const transformedWords = words.map(word => transformText(word));
+  
+  // 1列で結合して改行で区切って出力
+  return transformedWords.join('\n');
+}
+
 // 使用例
-const inputText = "入力されたトルスカ語のテキスト";
-const outputText = transformText(inputText);
+const inputText = "複数のトルスカ語の単語を入力してください";
+const outputText = transformMultipleWords(inputText);
 console.log(outputText);
