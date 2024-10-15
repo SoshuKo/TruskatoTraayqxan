@@ -21,6 +21,7 @@ const replacements = [
   { pattern: /sc/g, replacement: "c" },
   { pattern: /sç/g, replacement: "k" },
   { pattern: /sk/g, replacement: "q" },
+  { pattern: /tr/g, replacement: "tr" },
   { pattern: /çļ/g, replacement: "xr" },
   { pattern: /ģļ/g, replacement: "gr" },
   { pattern: /çh/g, replacement: "x" },
@@ -29,6 +30,9 @@ const replacements = [
   { pattern: /ï/g, replacement: "u" },
   { pattern: /ö/g, replacement: "e" },
   { pattern: /ë/g, replacement: "o" },
+  { pattern: /p/g, replacement: "f" },
+  { pattern: /t/g, replacement: "r" },
+  { pattern: /c/g, replacement: "s" },
   { pattern: /k/g, replacement: "qx" },
   { pattern: /g/g, replacement: "gh" },
   // ⑤一重音字Bの置換
