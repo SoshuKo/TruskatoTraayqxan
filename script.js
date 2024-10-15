@@ -40,11 +40,11 @@ const replacements = [
 
 // 語尾変換ルール（⑥）
 const vowelEndingReplacements = {
-  'a': 'ã',
-  'e': 'ẽ',
-  'i': 'ĩ',
-  'o': 'õ',
-  'u': 'ũ',
+  'a': 'an',
+  'e': 'en',
+  'i': 'in',
+  'o': 'on',
+  'u': 'un',
 };
 
 // 変換処理
