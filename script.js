@@ -38,15 +38,6 @@ const replacements = [
   { pattern: /ļ/g, replacement: "y" },
 ];
 
-// 語尾変換ルール（⑥）
-const vowelEndingReplacements = {
-  'a': 'an',
-  'e': 'en',
-  'i': 'in',
-  'o': 'on',
-  'u': 'un',
-};
-
 // 変換処理
 function transformText(input) {
   let transformed = input;
@@ -77,11 +68,6 @@ function transformText(input) {
         regex.lastIndex = start + rule.replacement.length;
       }
     }
-  });
-
-  // 語尾の母音変換（⑥）
-  transformed = transformed.replace(/([āēīōū])([aeiou])\b/g, (match, p1, p2) => {
-    return p1 + vowelEndingReplacements[p2];
   });
 
   // 最後に # を削除（⑦）
