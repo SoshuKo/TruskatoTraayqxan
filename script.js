@@ -14,13 +14,13 @@ const replacements = [
   { pattern: /ugh/g, replacement: "ū" },
   { pattern: /ügh/g, replacement: "ī" },
   { pattern: /çhļ/g, replacement: "xr" },
-  { pattern: /sch/g, replacement: "ch#" },
+  { pattern: /sch/g, replacement: "ch" },
   // ③二重音字の置換
-  { pattern: /sp/g, replacement: "p#" },
-  { pattern: /st/g, replacement: "t#" },
-  { pattern: /sc/g, replacement: "c#" },
-  { pattern: /sç/g, replacement: "k#" },
-  { pattern: /sk/g, replacement: "q#" },
+  { pattern: /sp/g, replacement: "p" },
+  { pattern: /st/g, replacement: "t" },
+  { pattern: /sc/g, replacement: "c" },
+  { pattern: /sç/g, replacement: "k" },
+  { pattern: /sk/g, replacement: "q" },
   { pattern: /çļ/g, replacement: "xr" },
   { pattern: /ģļ/g, replacement: "gr" },
   { pattern: /çh/g, replacement: "x" },
@@ -69,9 +69,6 @@ function transformText(input) {
       }
     }
   });
-
-  // 最後に # を削除（⑦）
-  transformed = transformed.replace(/#/g, "");
 
   return transformed;
 }
