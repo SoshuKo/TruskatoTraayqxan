@@ -44,7 +44,7 @@ const additionalReplacements = [
   { pattern: /b$/, replacement: "p" },
   { pattern: /v$/, replacement: "f" },
   { pattern: /^v/, replacement: "f" },
-  { pattern: /^f/, replacement: "’" },
+  { pattern: /^f/, replacement: "'" },
   { pattern: /f$/, replacement: "" }, // 語尾のfを削除
   { pattern: /d$/, replacement: "t" },
   { pattern: /c$/, replacement: "s" },
@@ -57,7 +57,7 @@ const additionalReplacements = [
   { pattern: /qx$/, replacement: "q" },
   { pattern: /^gh/, replacement: "x" },
   { pattern: /gh$/, replacement: "x" },
-  { pattern: /^x/, replacement: "’" },
+  { pattern: /^x/, replacement: "'" },
   { pattern: /x$/, replacement: "" },  // 語尾のxを削除
 ];
 
