@@ -14,13 +14,13 @@ const replacements = [
   { pattern: /ugh/g, replacement: "ū" },
   { pattern: /ügh/g, replacement: "ī" },
   { pattern: /çhļ/g, replacement: "xr" },
-  { pattern: /sch/g, replacement: "ch" },
+  { pattern: /sch/g, replacement: "ch#" },
   // ③二重音字の置換
-  { pattern: /sp/g, replacement: "p" },
-  { pattern: /st/g, replacement: "t" },
-  { pattern: /sc/g, replacement: "c" },
-  { pattern: /sç/g, replacement: "k" },
-  { pattern: /sk/g, replacement: "q" },
+  { pattern: /sp/g, replacement: "p#" },
+  { pattern: /st/g, replacement: "t#" },
+  { pattern: /sc/g, replacement: "c#" },
+  { pattern: /sç/g, replacement: "k#" },
+  { pattern: /sk/g, replacement: "q#" },
   { pattern: /çļ/g, replacement: "xr" },
   { pattern: /ģļ/g, replacement: "gr" },
   { pattern: /çh/g, replacement: "x" },
@@ -38,50 +38,98 @@ const replacements = [
   { pattern: /ļ/g, replacement: "y" },
 ];
 
-// 変換処理
+// 追加の置換ルールの定義
+const additionalReplacements = [
+  // 語尾の置換
+  { pattern: /b$/, replacement: "p" },
+  { pattern: /v$/, replacement: "f" },
+  { pattern: /^v/, replacement: "f" },
+  { pattern: /^f/, replacement: "’" },
+  { pattern: /f$/, replacement: "" }, // 語尾のfを削除
+  { pattern: /d$/, replacement: "t" },
+  { pattern: /c$/, replacement: "s" },
+  { pattern: /^z/, replacement: "s" },
+  { pattern: /z$/, replacement: "s" },
+  { pattern: /ch$/, replacement: "sh" },
+  { pattern: /^j/, replacement: "sh" },
+  { pattern: /j$/, replacement: "sh" },
+  { pattern: /g$/, replacement: "k" },
+  { pattern: /qx$/, replacement: "q" },
+  { pattern: /^gh/, replacement: "x" },
+  { pattern: /gh$/, replacement: "x" },
+  { pattern: /^x/, replacement: "’" },
+  { pattern: /x$/, replacement: "" },  // 語尾のxを削除
+];
+
+// 母音の置換
+const vowelsMap = {
+  a: 'ā',
+  e: 'ē',
+  i: 'ī',
+  o: 'ō',
+  u: 'ū',
+};
+
+// 置換処理（追加のルール適用）
+function applyAdditionalReplacements(word) {
+  let transformed = word;
+
+  // 追加の置換ルールを適用
+  additionalReplacements.forEach(rule => {
+    transformed = transformed.replace(rule.pattern, rule.replacement);
+  });
+
+  // ā, ē, ī, ō, ūが含まれていない場合の母音置換
+  if (!/[āēīōū]/.test(transformed)) {
+    // 最後に出現する母音（a, e, i, o, u）を置換
+    const lastVowelMatch = transformed.match(/[aeiou](?!.*[aeiou])/);
+    if (lastVowelMatch) {
+      const lastVowel = lastVowelMatch[0];
+      transformed = transformed.replace(lastVowel, vowelsMap[lastVowel]);
+    }
+  }
+
+  return transformed;
+}
+
+// 全体の変換処理
 function transformText(input) {
   let transformed = input;
   const markers = []; // マーカーリスト
 
-  // 置換ルールを順番に適用（既に置換された部分をスキップ）
+  // ①～⑤の置換を適用
   replacements.forEach((rule, index) => {
     let match;
     const regex = new RegExp(rule.pattern.source, 'g'); // 全てのマッチを探す
 
     while ((match = regex.exec(transformed)) !== null) {
-      // マッチの開始位置と終了位置を取得
       const start = match.index;
       const end = regex.lastIndex;
 
-      // この範囲が既にマークされていないか確認
       if (!markers.some(marker => marker.start <= start && marker.end >= end)) {
-        // 置換を実行
         transformed = transformed.substring(0, start) + rule.replacement + transformed.substring(end);
-
-        // 置換した範囲をマーカーとして保存（元の長さと置換後の長さに注意）
         markers.push({
           start: start,
           end: start + rule.replacement.length,
         });
-
-        // 置換が終わった後はregexのindexをリセット
         regex.lastIndex = start + rule.replacement.length;
       }
     }
   });
+
+  // 追加の置換を適用
+  transformed = applyAdditionalReplacements(transformed);
+
+  // 最後に # を削除（⑦）
+  transformed = transformed.replace(/#/g, "");
 
   return transformed;
 }
 
 // 複数単語の変換処理
 function transformMultipleWords(input) {
-  // 空白や改行で単語を分割
   const words = input.split(/\s+/);
-
-  // 各単語を変換し、結果を1列に結合
   const transformedWords = words.map(word => transformText(word));
-  
-  // 1列で結合して改行で区切って出力
   return transformedWords.join('\n');
 }
 
